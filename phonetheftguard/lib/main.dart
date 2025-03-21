@@ -23,7 +23,7 @@ class _HomePageState extends State<_HomePage>{
   int _selectedIndex = 2;
   final List<Widget> _pages = [
     Center(child: Text("Search Page", style: TextStyle(fontSize: 24))),
-    Center(child: Text("History Data", style: TextStyle(fontSize: 24))),
+    Center(child: Text("History", style: TextStyle(fontSize: 24))),
     Center(child: Text("Home", style: TextStyle(fontSize: 24))),
     Center(child: Text("Community", style: TextStyle(fontSize: 24))),
     Center(child: Text("Setting", style: TextStyle(fontSize: 24))),
@@ -51,7 +51,7 @@ class _HomePageState extends State<_HomePage>{
           showUnselectedLabels: true, 
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(icon: Icon(Icons.history), label: "History Data"),
+            BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(icon: Icon(Icons.people), label: "Community"),
             BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Setting"),
