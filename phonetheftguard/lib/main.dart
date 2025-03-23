@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'osm_map_page.dart';
+import 'setting_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,7 +25,7 @@ class _HomePageState extends State<_HomePage> {
     Center(child: Text("History", style: TextStyle(fontSize: 24))),
     OSMMapPage(),
     Center(child: Text("Community", style: TextStyle(fontSize: 24))),
-    Center(child: Text("Setting", style: TextStyle(fontSize: 24))),
+    const SettingsPage(),
   ];
   void oneTapOnBottom(int index) {
     setState(() {

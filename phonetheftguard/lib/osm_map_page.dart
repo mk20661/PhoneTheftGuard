@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'global_data.dart';
 
 class OSMMapPage extends StatelessWidget {
   const OSMMapPage({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class OSMMapPage extends StatelessWidget {
             final placemark = placemarkSnapshot.data!.first;
             final address =
                 "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
-
+            globalAddress = "${placemark.locality}";
             return Column(
               children: [
                 SizedBox(
