@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     _currentAddress = globalAddress ?? "Loading...";
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(Duration(seconds: 5), () {
       if (globalAddress != null) {
         setState(() {
           _currentAddress = globalAddress!;
