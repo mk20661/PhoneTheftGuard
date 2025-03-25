@@ -64,4 +64,34 @@ jobs:
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/bundle/release/*.aab,build/app/out
+          artifacts: "build/app/outputs/bundle/release/*.aab,build/app/outputs/flutter-apk/*.apk"
+          tag: "v${{ steps.get_flutter_app_version.outputs.TAG_VERSION }}"
+          # token: ${{ secrets.PERSONAL_RELEASE_TOKEN }}
+
+  # TODO:  Upload to Firebase - for App Distribution
+  # Release job, upload the apk or aab to Firebase App Distribution
+  # release:
+  #   name: Sends Release APK to Firebase
+  #   needs: [ build ]
+  #   runs-on: ubuntu-latest
+  #   steps:
+    
+  #   # Retrieve apk file from GitHub artifacts
+  #   - uses: actions/checkout@v3
+  #   - name: Get flutter-apk from artifacts
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: flutter-apk
+  #  OR
+  #       name: flutter-appbundle
+
+  #   # Upload apk file to Firebase
+  #   - name: Upload artifact to Firebase App Distribution
+  #     uses: wzieba/Firebase-Distribution-Github-Action@v1
+  #     with:
+  #       appId: ${{secrets.FIREBASE_IOS_APP_ID}}
+  #       serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+  #       groups: android-developers
+  #       file: ${{secrets.APP_NAME}}.apk
+  #  OR
+  #       file: ${{secrets.APP_NAME}}.aab
