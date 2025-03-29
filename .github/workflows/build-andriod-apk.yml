@@ -3,8 +3,8 @@ name: Flutter Build and Upload Android APK
 on:
   push:                 # This is the condition that the action will run on
     branches: [ main ]  # In this case when you push your code into GitHub
-    tags:
-    - "v1.0.0"          # In this case when you tag your commit with v1.0.0 for example
+    # tags:
+    # - "v1.0.0"          # In this case when you tag your commit with v1.0.0 for example
 
 jobs:
   build:
