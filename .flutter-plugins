@@ -1,0 +1,18 @@
+# This is a generated file; do not edit or check into version control.
+cloud_firestore=/Users/qakight/.pub-cache/hosted/pub.dev/cloud_firestore-5.6.5/
+cloud_firestore_web=/Users/qakight/.pub-cache/hosted/pub.dev/cloud_firestore_web-4.4.5/
+desktop_webview_auth=/Users/qakight/.pub-cache/hosted/pub.dev/desktop_webview_auth-0.0.15/
+firebase_auth=/Users/qakight/.pub-cache/hosted/pub.dev/firebase_auth-5.5.1/
+firebase_auth_web=/Users/qakight/.pub-cache/hosted/pub.dev/firebase_auth_web-5.14.1/
+firebase_core=/Users/qakight/.pub-cache/hosted/pub.dev/firebase_core-3.12.1/
+firebase_core_web=/Users/qakight/.pub-cache/hosted/pub.dev/firebase_core_web-2.21.1/
+firebase_dynamic_links=/Users/qakight/.pub-cache/hosted/pub.dev/firebase_dynamic_links-6.1.4/
+flutter_native_splash=/Users/qakight/.pub-cache/hosted/pub.dev/flutter_native_splash-2.4.5/
+geocoding=/Users/qakight/.pub-cache/hosted/pub.dev/geocoding-2.2.2/
+geocoding_android=/Users/qakight/.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/
+geocoding_ios=/Users/qakight/.pub-cache/hosted/pub.dev/geocoding_ios-2.3.0/
+geolocator=/Users/qakight/.pub-cache/hosted/pub.dev/geolocator-10.1.1/
+geolocator_android=/Users/qakight/.pub-cache/hosted/pub.dev/geolocator_android-4.6.2/
+geolocator_apple=/Users/qakight/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.12/
+geolocator_web=/Users/qakight/.pub-cache/hosted/pub.dev/geolocator_web-2.2.1/
+geolocator_windows=/Users/qakight/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.4/
