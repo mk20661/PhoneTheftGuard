@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'osm_map_page.dart';
 import 'setting_page.dart';
 import 'history.dart';
+import 'search_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,7 +23,7 @@ class _HomePage extends StatefulWidget {
 class _HomePageState extends State<_HomePage> {
   int _selectedIndex = 2;
   final List<Widget> _pages = [
-    Center(child: Text("Search Page", style: TextStyle(fontSize: 24))),
+    SearchMapPage(),
     HistoryPage(),
     OSMMapPage(),
     Center(child: Text("Community", style: TextStyle(fontSize: 24))),
