@@ -70,6 +70,7 @@ flutter:
   assets:
     - assets/img/startLogo.png
     - assets/geojson/London.geojson
+    - assets/geojson/PhoneTheft.geojson
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
