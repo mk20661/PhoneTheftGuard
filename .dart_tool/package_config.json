@@ -86,6 +86,12 @@
       "languageVersion": "3.1"
     },
     {
+      "name": "csv",
+      "rootUri": "file:///Users/qakight/.pub-cache/hosted/pub.dev/csv-6.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/qakight/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.8",
       "packageUri": "lib/",
@@ -584,7 +590,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-04-07T08:42:03.958813Z",
+  "generated": "2025-04-07T16:51:15.581047Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.27.3/flutter",

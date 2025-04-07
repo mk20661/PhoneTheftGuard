@@ -41,7 +41,6 @@ class _HistoryPageState extends State<HistoryPage> {
     for (var feature in geojson['features']) {
       final geometry = feature['geometry'];
       final props = feature['properties'];
-      final name = props['name'] ?? 'Unknown';
       final thefts = props[selectedMonth]?.toInt() ?? 0;
 
       final List<LatLng> points = parseGeometryPoints(geometry);

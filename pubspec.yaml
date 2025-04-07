@@ -44,6 +44,8 @@ dependencies:
   cloud_firestore: ^5.6.5
   provider: ^6.1.4
   firebase_ui_auth: ^1.16.1
+  csv: ^6.0.0
+  http: ^1.0.0
 
 flutter_native_splash:
   color: "#0A2540" 
@@ -71,6 +73,8 @@ flutter:
     - assets/img/startLogo.png
     - assets/geojson/London.geojson
     - assets/geojson/PhoneTheft.geojson
+    - assets/geojson/PhoneTheftTotalWithColor(Geometry).csv
+    - assets/geojson/PhoneTheft_Total_Only.csv
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
