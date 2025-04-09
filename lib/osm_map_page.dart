@@ -5,8 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:csv/csv.dart';
 import 'global_data.dart';
 
 class OSMMapPage extends StatelessWidget {
@@ -46,35 +44,11 @@ class OSMMapPage extends StatelessWidget {
         final first = data['result'][0] as Map<String, dynamic>;
         final codes = first['codes'] as Map<String, dynamic>;
         final lsoaCode = codes['lsoa']?.toString() ?? 'Unknown';
-
-        print("📌 当前 LSOA Code: $lsoaCode");
         return lsoaCode;
       }
     }
 
     return 'Unknown';
-  }
-
-  Future<Map<String, int>> loadLSOATheftCounts() async {
-    final csvString = await rootBundle.loadString(
-      'assets/geojson/PhoneTheft_Total_Only.csv',
-    );
-    final rows = const CsvToListConverter().convert(csvString, eol: '\n');
-
-    final header = rows.first;
-    final lsoaIndex = header.indexOf('LSOA Code');
-    final theftCountIndex = header.length - 1;
-
-    if (lsoaIndex == -1 || theftCountIndex == -1) return {};
-
-    final counts = <String, int>{};
-    for (var row in rows.skip(1)) {
-      final code = row[lsoaIndex].toString();
-      final thefts = int.tryParse(row[theftCountIndex].toString()) ?? 0;
-      counts[code] = thefts;
-    }
-
-    return counts;
   }
 
   Color getColor(int thefts) {
