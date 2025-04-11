@@ -28,7 +28,7 @@ class _SearchMapPageState extends State<SearchMapPage> {
       List<Location> locations = await locationFromAddress(query);
       if (locations.isNotEmpty) {
         final newCenter = LatLng(locations[0].latitude, locations[0].longitude);
-        final lsoa = await getLSOACode(newCenter.latitude, newCenter.longitude);
+        final lsoa = await getLSOACodeFromQuery(query);
         final theftData = await loadLSOATheftCounts();
         final thefts = theftData[lsoa] ?? 0;
 
@@ -56,18 +56,40 @@ class _SearchMapPageState extends State<SearchMapPage> {
     }
   }
 
-  Future<String> getLSOACode(double lat, double lon) async {
-    final url = 'https://api.postcodes.io/postcodes?lon=$lon&lat=$lat';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data['result'] != null &&
-          data['result'] is List &&
-          data['result'].isNotEmpty) {
-        final codes = data['result'][0]['codes'];
-        return codes['lsoa'] ?? 'Unknown';
+  Future<String> getLSOACodeFromQuery(String query) async {
+    final isPostcode = RegExp(
+      r'^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$',
+      caseSensitive: false,
+    ).hasMatch(query.trim());
+    try {
+      String postcode = query.trim();
+
+      if (!isPostcode) {
+        final locations = await locationFromAddress(query);
+        if (locations.isEmpty) return 'Unknown';
+        final lat = locations[0].latitude;
+        final lon = locations[0].longitude;
+
+        final placemarks = await placemarkFromCoordinates(lat, lon);
+        final placemark = placemarks.first;
+        postcode = placemark.postalCode ?? '';
+        if (postcode.isEmpty) return 'Unknown';
       }
+
+      final url =
+          'https://api.postcodes.io/postcodes/${Uri.encodeComponent(postcode)}';
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['status'] == 200 && data['result'] != null) {
+          final lsoa = data['result']['codes']['lsoa'];
+          return lsoa ?? 'Unknown';
+        }
+      }
+    } catch (e) {
+      print("❌ getLSOACodeFromQuery failed: $e");
     }
+
     return 'Unknown';
   }
 
