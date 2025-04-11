@@ -4,14 +4,29 @@ import 'setting_page.dart';
 import 'history.dart';
 import 'search_page.dart';
 
-void main() {
+import 'community.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'login_page.dart';
+import 'firebase_options.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: _HomePage());
+    return MaterialApp(
+    debugShowCheckedModeBanner: false, 
+    home: _HomePage(),
+    routes: {
+              '/login': (context) => LoginPage(),
+    }
+    );
   }
 }
 
@@ -26,7 +41,7 @@ class _HomePageState extends State<_HomePage> {
     SearchMapPage(),
     HistoryPage(),
     OSMMapPage(),
-    Center(child: Text("Community", style: TextStyle(fontSize: 24))),
+    CommunityPage(),
     const SettingsPage(),
   ];
   void oneTapOnBottom(int index) {

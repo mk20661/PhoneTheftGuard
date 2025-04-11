@@ -42,3 +42,4 @@ com.example.phonetheftguard.app-debug-40 /Users/qakight/Desktop/CASA0015/casa001
 com.example.phonetheftguard.app-debug-41 /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/flutter_native_splash/intermediates/packaged_res/debug/packageDebugResources
 com.example.phonetheftguard.app-debug-42 /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geocoding_android/intermediates/packaged_res/debug/packageDebugResources
 com.example.phonetheftguard.app-debug-43 /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geolocator_android/intermediates/packaged_res/debug/packageDebugResources
+com.example.phonetheftguard.app-debug-44 /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/path_provider_android/intermediates/packaged_res/debug/packageDebugResources
