@@ -16,11 +16,11 @@
 15-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:6:5-66
 15-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:6:22-64
 16    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-16-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:2:5-79
-16-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:2:22-76
+16-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:3:5-79
+16-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:3:22-76
 17    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-17-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:3:5-81
-17-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:3:22-78
+17-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:4:5-81
+17-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:4:22-78
 18    <!--
 19 Required to query activities that can process text, see:
 20         https://developer.android.com/training/package-visibility and
@@ -29,16 +29,16 @@
 23         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
 24    -->
 25    <queries>
-25-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:41:5-46:15
+25-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:42:5-47:15
 26        <intent>
-26-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:42:9-45:18
+26-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:43:9-46:18
 27            <action android:name="android.intent.action.PROCESS_TEXT" />
-27-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:43:13-72
-27-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:43:21-70
+27-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:13-72
+27-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:21-70
 28
 29            <data android:mimeType="text/plain" />
-29-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:13-50
-29-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:19-48
+29-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:13-50
+29-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:19-48
 30        </intent>
 31    </queries> <!-- Although the *SdkVersion is captured in gradle build files, this is required for non gradle builds -->
 32    <!-- <uses-sdk android:minSdkVersion="21" /> -->
@@ -227,7 +227,7 @@
 144-->[com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:39:27-75
 145
 146                <data
-146-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:13-50
+146-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:13-50
 147                    android:host="firebase.auth"
 148                    android:path="/"
 149                    android:scheme="genericidp" />
@@ -259,7 +259,7 @@
 162-->[com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:39:27-75
 163
 164                <data
-164-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:13-50
+164-->/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:13-50
 165                    android:host="firebase.auth"
 166                    android:path="/"
 167                    android:scheme="recaptcha" />

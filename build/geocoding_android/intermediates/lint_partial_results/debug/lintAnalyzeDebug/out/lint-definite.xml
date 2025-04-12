@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.7.0" type="incidents">
+
+    <incident
+        id="AndroidGradlePluginVersion"
+        severity="warning"
+        message="A newer version of com.android.tools.build:gradle than 7.3.1 is available: 8.9.1">
+        <fix-replace
+            description="Change to 8.9.1"
+            family="Update versions"
+            oldString="7.3.1"
+            replacement="8.9.1"
+            priority="0"/>
+        <location
+            file="${:geocoding_android*projectDir}/build.gradle"
+            line="11"
+            column="19"
+            startOffset="163"
+            endLine="11"
+            endColumn="57"
+            endOffset="201"/>
+    </incident>
+
+    <incident
+        id="GradleDependency"
+        severity="warning"
+        message="A newer version of `compileSdkVersion` than 33 is available: 34">
+        <fix-replace
+            description="Set compileSdkVersion to 34"
+            oldString="33"
+            replacement="34"
+            priority="0"/>
+        <location
+            file="${:geocoding_android*projectDir}/build.gradle"
+            line="29"
+            column="5"
+            startOffset="459"
+            endLine="29"
+            endColumn="18"
+            endOffset="472"/>
+    </incident>
+
+</incidents>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.7.0" type="partial_results">
+    <map id="NotificationPermission">
+        <entry
+            name="source"
+            boolean="true"/>
+    </map>
+    <map id="UnsafeImplicitIntentLaunch">
+            <map id="actionsSent">
+                    <map id="android.settings.APPLICATION_DETAILS_SETTINGS (used to start an activity)">
+                        <location id="0"
+                            file="${:geolocator_android*debug*MAIN*sourceProvider*0*javaDir*0}/com/baseflow/geolocator/utils/Utils.java"
+                            line="11"
+                            column="7"
+                            startOffset="278"
+                            endLine="11"
+                            endColumn="94"
+                            endOffset="365"/>
+                    </map>
+                    <map id="android.settings.LOCATION_SOURCE_SETTINGS (used to start an activity)">
+                        <location id="0"
+                            file="${:geolocator_android*debug*MAIN*sourceProvider*0*javaDir*0}/com/baseflow/geolocator/utils/Utils.java"
+                            line="29"
+                            column="7"
+                            startOffset="968"
+                            endLine="29"
+                            endColumn="73"
+                            endOffset="1034"/>
+                    </map>
+            </map>
+    </map>
+    <map id="UnusedResources">
+        <entry
+            name="model"
+            string=""/>
+    </map>
+
+</incidents>
