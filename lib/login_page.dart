@@ -13,7 +13,6 @@ class LoginPage extends StatelessWidget {
       ],
       actions: [
         ForgotPasswordAction((context, email) {
-          // 忘记密码跳转到 /login/forgot-password?email=xxx
           final uri = Uri(
             path: '/login/forgot-password',
             queryParameters: {'email': email},
@@ -30,18 +29,15 @@ class LoginPage extends StatelessWidget {
           if (user == null) return;
 
           if (state is UserCreated) {
-            // 设置昵称为邮箱前缀
             user.updateDisplayName(user.email!.split('@')[0]);
           }
 
           if (!user.emailVerified) {
             user.sendEmailVerification();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('请前往邮箱完成验证')),
+              const SnackBar(content: Text('Please verify your email')),
             );
           }
-
-          // 登录成功后跳转主页
           context.go('/');
         }),
       ],

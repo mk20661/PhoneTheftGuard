@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gcm_defaultSenderId" translatable="false">704686589752</string>
-    <string name="google_api_key" translatable="false">AIzaSyDbU-rSWcm9C486pHQUFebizkRaegZz6VU</string>
-    <string name="google_app_id" translatable="false">1:704686589752:android:feb9d37a4999505901a3cd</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDbU-rSWcm9C486pHQUFebizkRaegZz6VU</string>
-    <string name="google_storage_bucket" translatable="false">phonetheftguard.firebasestorage.app</string>
-    <string name="project_id" translatable="false">phonetheftguard</string>
-</resources>
