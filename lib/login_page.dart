@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
               const SnackBar(content: Text('Please verify your email')),
             );
           }
-          context.go('/');
+          context.go('/community');
         }),
       ],
     );

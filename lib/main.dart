@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 import 'firebase_options.dart';
 import 'app_state.dart';
-import 'login_page.dart';
 import 'community.dart';
 import 'history.dart';
 import 'setting_page.dart';
@@ -26,8 +26,79 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     initialLocation: '/home',
     routes: [
-      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-      GoRoute(path: '/sign-in', builder: (context, state) => const LoginPage()),
+      GoRoute(
+        path: '/sign-in',
+        builder: (context, state) {
+          return SignInScreen(
+            providers: [EmailAuthProvider()],
+            actions: [
+              ForgotPasswordAction(((context, email) {
+                final uri = Uri(
+                  path: '/sign-in/forgot-password',
+                  queryParameters: <String, String?>{'email': email},
+                );
+                context.push(uri.toString());
+              })),
+              AuthStateChangeAction(((context, state) {
+                final user = switch (state) {
+                  SignedIn s => s.user,
+                  UserCreated s => s.credential.user,
+                  _ => null,
+                };
+                if (user == null) return;
+                if (state is UserCreated) {
+                  user.updateDisplayName(user.email!.split('@')[0]);
+                }
+                if (!user.emailVerified) {
+                  user.sendEmailVerification();
+                  const snackBar = SnackBar(
+                    content: Text('Please verify your email'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                context.go('/community');
+              })),
+            ],
+          );
+        },
+        routes: [
+          GoRoute(
+            path: 'forgot-password',
+            builder: (context, state) {
+              final arguments = state.uri.queryParameters;
+              return ForgotPasswordScreen(
+                email: arguments['email'],
+                headerMaxExtent: 200,
+              );
+            },
+          ),
+        ],
+      ),
+
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Profile'),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  context.go('/community'); 
+                },
+              ),
+            ),
+            body: ProfileScreen(
+              providers: const [],
+              actions: [
+                SignedOutAction((context) {
+                  context.go('/community');
+                }),
+              ],
+            ),
+          );
+        },
+      ),
 
       ShellRoute(
         builder: (context, state, child) => HomePage(child: child),

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class Header extends StatelessWidget {
   const Header(this.heading, {super.key});
@@ -54,9 +53,7 @@ class StyledButton extends StatelessWidget {
     style: OutlinedButton.styleFrom(
       side: const BorderSide(color: Colors.deepPurple),
     ),
-    onPressed: (){
-      Navigator.pushNamed(context, '/login');
-      },
+    onPressed: onPressed,
     child: child,
   );
 }
