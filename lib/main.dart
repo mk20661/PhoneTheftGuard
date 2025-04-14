@@ -11,12 +11,25 @@ import 'history.dart';
 import 'setting_page.dart';
 import 'search_page.dart';
 import 'osm_map_page.dart';
+import 'src/theme_provider.dart';
+import 'src/locale_provider.dart';
+import 'about_page.dart';
+import 'privacy_policy_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
-    ChangeNotifierProvider(create: (_) => ApplicationState(), child: MyApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ApplicationState()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider(create: (_) => ApplicationState()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 
@@ -78,13 +91,19 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/profile',
         builder: (context, state) {
+          final from = (state.extra as Map?)?['from'] ?? 'community';
+
           return Scaffold(
             appBar: AppBar(
               title: const Text('Profile'),
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  context.go('/community'); 
+                  if (from == 'settings') {
+                    context.go('/setting');
+                  } else {
+                    context.go('/community');
+                  }
                 },
               ),
             ),
@@ -99,16 +118,27 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+      GoRoute(
+        path: '/about', 
+        builder: (context, state) => const AboutPage()),
+      GoRoute(
+        path: '/privacy',
+        builder: (context, state) => const PrivacyPolicyPage(),
+      ),
 
       ShellRoute(
         builder: (context, state, child) => HomePage(child: child),
         routes: [
-          GoRoute(path: '/home', builder: (context, state) => OSMMapPage()),
+          GoRoute(
+            path: '/home', 
+            builder: (context, state) => OSMMapPage()),
           GoRoute(
             path: '/search',
             builder: (context, state) => SearchMapPage(),
           ),
-          GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
+          GoRoute(
+            path: '/history', 
+            builder: (context, state) => HistoryPage()),
           GoRoute(
             path: '/community',
             builder: (context, state) => CommunityPage(),
@@ -124,9 +154,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: _router,
+    return Builder(
+      builder: (context) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        final localeProvider = Provider.of<LocaleProvider>(context);
+
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: themeProvider.themeMode,
+          locale: localeProvider.locale,
+          routerConfig: _router,
+        );
+      },
     );
   }
 }

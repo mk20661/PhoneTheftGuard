@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'global_data.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'src/theme_provider.dart';
+import 'src/locale_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -9,77 +14,252 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late String _currentAddress;
-  @override
-  void initState() {
-    super.initState();
-    _currentAddress = globalAddress ?? "Loading...";
-    Future.delayed(Duration(seconds: 5), () {
-      if (globalAddress != null) {
-        setState(() {
-          _currentAddress = globalAddress!;
-        });
-      }
-    });
-  }
+  bool _notificationsEnabled = true;
+  bool _locationWarningEnabled = true;
+  String _selectedMapStyle = "Heatmap";
+  String _selectedLanguage = "English";
+  String _selectedTheme = "System";
 
-  bool _notificationsEnabled = false;
+  final List<String> _mapStyles = ['Heatmap', 'Standard'];
+  final List<String> _languages = ['English', '中文'];
+  final List<String> _themes = ['Light', 'Dark', 'System'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue[50],
+      backgroundColor: const Color(0xFFE6F0FA),
       appBar: AppBar(
-        title: const Text("Setting"),
-        backgroundColor: Colors.lightBlue[100],
-        elevation: 0,
+        title: const Text("Settings"),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFB3D1F2),
+        elevation: 2,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.person, size: 50, color: Colors.white),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          _buildSectionTitle("Account"),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            const SizedBox(height: 16),
-            const Text(
-              "User Name",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            elevation: 2,
+            child: Column(
               children: [
-                Icon(Icons.location_on, size: 16, color: Colors.grey),
-                SizedBox(width: 4),
-                Text(_currentAddress, style: TextStyle(color: Colors.grey)),
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: const Text("Edit Profile"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    context.push('/profile', extra: {'from': 'settings'});
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.lock),
+                  title: const Text("Change Password"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    final user = FirebaseAuth.instance.currentUser;
+                    if (user != null && user.email != null) {
+                      context.push(
+                        '/sign-in/forgot-password?email=${Uri.encodeComponent(user.email!)}',
+                      );
+                    }
+                  },
+                ),
               ],
             ),
-            const SizedBox(height: 32),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(
-                "Personal Information",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {},
+          ),
+
+          const SizedBox(height: 20),
+
+          _buildSectionTitle("App Settings"),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            SwitchListTile(
-              secondary: const Icon(Icons.notifications),
-              title: const Text(
-                "Notifications",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              value: _notificationsEnabled,
-              onChanged: (bool value) {
-                setState(() {
-                  _notificationsEnabled = value;
-                });
+            elevation: 2,
+            child: Column(
+              children: [
+                SwitchListTile(
+                  secondary: const Icon(Icons.notifications),
+                  title: const Text("Enable Notifications"),
+                  value: _notificationsEnabled,
+                  onChanged: (val) {
+                    setState(() {
+                      _notificationsEnabled = val;
+                    });
+                  },
+                ),
+                SwitchListTile(
+                  secondary: const Icon(Icons.warning),
+                  title: const Text("Location Safety Alert"),
+                  value: _locationWarningEnabled,
+                  onChanged: (val) {
+                    setState(() {
+                      _locationWarningEnabled = val;
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.map),
+                  title: const Text("Map Style"),
+                  trailing: DropdownButton<String>(
+                    value: _selectedMapStyle,
+                    underline: const SizedBox(),
+                    items:
+                        _mapStyles.map((style) {
+                          return DropdownMenuItem(
+                            value: style,
+                            child: Text(style),
+                          );
+                        }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedMapStyle = value!;
+                      });
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.language),
+                  title: const Text("Language"),
+                  trailing: DropdownButton<String>(
+                    value: _selectedLanguage,
+                    underline: const SizedBox(),
+                    items:
+                        _languages.map((lang) {
+                          return DropdownMenuItem(
+                            value: lang,
+                            child: Text(lang),
+                          );
+                        }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedLanguage = value!;
+                      });
+                      final localeCode = value == '中文' ? 'zh' : 'en';
+                      Provider.of<LocaleProvider>(
+                        context,
+                        listen: false,
+                      ).setLocale(localeCode);
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.brightness_6),
+                  title: const Text("Theme"),
+                  trailing: DropdownButton<String>(
+                    value: _selectedTheme,
+                    underline: const SizedBox(),
+                    items:
+                        _themes.map((theme) {
+                          return DropdownMenuItem(
+                            value: theme,
+                            child: Text(theme),
+                          );
+                        }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedTheme = value!;
+                      });
+                      Provider.of<ThemeProvider>(
+                        context,
+                        listen: false,
+                      ).setTheme(value!);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          _buildSectionTitle("Info & Privacy"),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 2,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text("About App"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    context.push('/about');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.privacy_tip),
+                  title: const Text("Privacy Policy"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: () {
+                    context.push('/privacy');
+                  },
+                ),
+                const ListTile(
+                  leading: Icon(Icons.info_outline),
+                  title: Text("Version"),
+                  trailing: Text("v1.0.0"),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 2,
+            child: ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text("Log Out", style: TextStyle(color: Colors.red)),
+              onTap: () async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder:
+                      (ctx) => AlertDialog(
+                        title: const Text("Confirm Logout"),
+                        content: const Text(
+                          "Are you sure you want to log out?",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(ctx).pop(false),
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(ctx).pop(true),
+                            child: const Text("Log Out"),
+                          ),
+                        ],
+                      ),
+                );
+                if (confirm == true) {
+                  await FirebaseAuth.instance.signOut();
+                  if (context.mounted) context.go('/sign-in');
+                }
               },
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 4.0, bottom: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
         ),
       ),
     );
