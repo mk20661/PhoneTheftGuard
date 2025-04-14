@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 import 'firebase_options.dart';
 import 'app_state.dart';
@@ -13,61 +14,86 @@ import 'osm_map_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ApplicationState(),
-      child: MyApp(),
-    ),
+    ChangeNotifierProvider(create: (_) => ApplicationState(), child: MyApp()),
   );
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
+  final GoRouter _router = GoRouter(
+    initialLocation: '/home',
+    routes: [
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
+      GoRoute(path: '/sign-in', builder: (context, state) => const LoginPage()),
+
+      ShellRoute(
+        builder: (context, state, child) => HomePage(child: child),
+        routes: [
+          GoRoute(path: '/home', builder: (context, state) => OSMMapPage()),
+          GoRoute(
+            path: '/search',
+            builder: (context, state) => SearchMapPage(),
+          ),
+          GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
+          GoRoute(
+            path: '/community',
+            builder: (context, state) => CommunityPage(),
+          ),
+          GoRoute(
+            path: '/setting',
+            builder: (context, state) => SettingsPage(),
+          ),
+        ],
+      ),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/community': (context) => const CommunityPage(),
-      },
-      home: _HomePage(),
+      routerConfig: _router,
     );
   }
 }
 
-class _HomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
+  final Widget child;
+  const HomePage({super.key, required this.child});
+
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<_HomePage> {
+class _HomePageState extends State<HomePage> {
   int _selectedIndex = 2;
 
-  final List<Widget> _pages = const [
-    SearchMapPage(),
-    HistoryPage(),
-    OSMMapPage(),
-    CommunityPage(),
-    SettingsPage(),
+  final List<String> _routes = [
+    '/search',
+    '/history',
+    '/home',
+    '/community',
+    '/setting',
   ];
 
-  void oneTapOnBottom(int index) {
+  void _onTap(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    context.go(_routes[index]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _pages),
+      body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        onTap: oneTapOnBottom,
+        onTap: _onTap,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         iconSize: 28,

@@ -107,136 +107,136 @@ class OSMMapPage extends StatelessWidget {
                         "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
                     globalAddress = "${placemark.locality}";
 
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 500,
-                          child: Stack(
+                    return Scaffold(
+                      backgroundColor: Colors.white,
+                      body: SafeArea(
+                        child: SingleChildScrollView(
+                          child: Column(
                             children: [
-                              FlutterMap(
-                                mapController: mapController,
-                                options: MapOptions(
-                                  center: currentLocation,
-                                  zoom: 16,
-                                ),
-                                children: [
-                                  TileLayer(
-                                    urlTemplate:
-                                        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                                  ),
-                                  MarkerLayer(
-                                    markers: [
-                                      Marker(
-                                        point: currentLocation,
-                                        width: 60,
-                                        height: 60,
-                                        child: const Icon(
-                                          Icons.location_on,
-                                          size: 40,
-                                          color: Colors.red,
+                              SizedBox(
+                                height: 500,
+                                child: Stack(
+                                  children: [
+                                    FlutterMap(
+                                      mapController: mapController,
+                                      options: MapOptions(
+                                        center: currentLocation,
+                                        zoom: 16,
+                                      ),
+                                      children: [
+                                        TileLayer(
+                                          urlTemplate:
+                                              "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                                         ),
+                                        MarkerLayer(
+                                          markers: [
+                                            Marker(
+                                              point: currentLocation,
+                                              width: 60,
+                                              height: 60,
+                                              child: const Icon(
+                                                Icons.location_on,
+                                                size: 40,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Positioned(
+                                      bottom: 16,
+                                      right: 16,
+                                      child: FloatingActionButton(
+                                        onPressed: () async {
+                                          final newPosition =
+                                              await Geolocator.getCurrentPosition();
+                                          mapController.move(
+                                            LatLng(
+                                              newPosition.latitude,
+                                              newPosition.longitude,
+                                            ),
+                                            16,
+                                          );
+                                        },
+                                        child: const Icon(Icons.my_location),
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Positioned(
-                                bottom: 16,
-                                right: 16,
-                                child: FloatingActionButton(
-                                  onPressed: () async {
-                                    final newPosition =
-                                        await Geolocator.getCurrentPosition();
-                                    mapController.move(
-                                      LatLng(
-                                        newPosition.latitude,
-                                        newPosition.longitude,
+                              const SizedBox(height: 20),
+                              Container(
+                                margin: const EdgeInsets.all(20),
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: riskColor,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "\u{1F4CD} Current Location:",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.white,
                                       ),
-                                      16,
-                                    );
-                                  },
-                                  child: const Icon(Icons.my_location),
+                                    ),
+                                    Text(
+                                      address,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    const Text(
+                                      "LSOA Code:",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      lsoaCode,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "$thefts phone thefts in this area",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      thefts > 15
+                                          ? "\u{26A0}\u{FE0F} High phone theft risk"
+                                          : "\u{2705} Low phone theft risk",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        Expanded(
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              double cardWidth = constraints.maxWidth * 0.9;
-                              if (cardWidth > 400) cardWidth = 400;
-                              return Center(
-                                child: Container(
-                                  width: cardWidth,
-                                  padding: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    color: riskColor,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 10,
-                                        offset: Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Current Location:",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        address,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      const Text(
-                                        "Here is:",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        "LSOA Code: $lsoaCode",
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        "$thefts phone thefts in this area",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        thefts > 15
-                                            ? "⚠️ High phone theft risk"
-                                            : "✅ Low phone theft risk",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                      ),
                     );
                   },
                 );

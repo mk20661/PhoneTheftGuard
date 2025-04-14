@@ -21,7 +21,6 @@ class CommunityPage extends StatelessWidget {
           const IconAndDetail(Icons.people, 'Community Events'),
           const IconAndDetail(Icons.shield, 'Phone Theft Awareness'),
 
-          // ✅ Login/Logout widget — only this part was added
           Consumer<ApplicationState>(
             builder: (context, appState, _) => AuthFunc(
               loggedIn: appState.loggedIn,
