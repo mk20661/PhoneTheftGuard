@@ -6,6 +6,8 @@ import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'global_data.dart';
+import 'package:provider/provider.dart';
+import 'src/settings_state.dart';
 
 class OSMMapPage extends StatelessWidget {
   const OSMMapPage({Key? key}) : super(key: key);
@@ -61,6 +63,8 @@ class OSMMapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final settingsState = Provider.of<SettingsState>(context);
+
     return FutureBuilder<Position>(
       future: _getPosition(),
       builder: (context, snapshot) {
@@ -91,6 +95,29 @@ class OSMMapPage extends StatelessWidget {
                 final theftData = theftSnapshot.data!;
                 final thefts = theftData[lsoaCode] ?? 0;
                 final riskColor = getColor(thefts);
+
+                if (settingsState.locationAlertEnabled &&
+                    settingsState.notificationsEnabled &&
+                    thefts > 15) {
+                  Future.delayed(Duration.zero, () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text("⚠️ High Risk Area"),
+                            content: const Text(
+                              "You're in a high-risk phone theft area! Stay alert.",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          ),
+                    );
+                  });
+                }
 
                 return FutureBuilder<List<Placemark>>(
                   future: placemarkFromCoordinates(

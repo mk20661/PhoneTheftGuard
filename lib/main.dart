@@ -15,6 +15,7 @@ import 'src/theme_provider.dart';
 import 'src/locale_provider.dart';
 import 'about_page.dart';
 import 'privacy_policy_page.dart';
+import 'src/settings_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => ApplicationState()),
+        ChangeNotifierProvider(create: (_) => SettingsState()),
       ],
       child: MyApp(),
     ),

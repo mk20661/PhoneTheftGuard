@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'src/theme_provider.dart';
-import 'src/locale_provider.dart';
+import 'src/settings_state.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -16,16 +16,13 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool _notificationsEnabled = true;
   bool _locationWarningEnabled = true;
-  String _selectedMapStyle = "Heatmap";
-  String _selectedLanguage = "English";
   String _selectedTheme = "System";
 
-  final List<String> _mapStyles = ['Heatmap', 'Standard'];
-  final List<String> _languages = ['English', '中文'];
   final List<String> _themes = ['Light', 'Dark', 'System'];
 
   @override
   Widget build(BuildContext context) {
+    final settingsState = Provider.of<SettingsState>(context);
     return Scaffold(
       backgroundColor: const Color(0xFFE6F0FA),
       appBar: AppBar(
@@ -83,67 +80,18 @@ class _SettingsPageState extends State<SettingsPage> {
                 SwitchListTile(
                   secondary: const Icon(Icons.notifications),
                   title: const Text("Enable Notifications"),
-                  value: _notificationsEnabled,
+                  value: settingsState.notificationsEnabled,
                   onChanged: (val) {
-                    setState(() {
-                      _notificationsEnabled = val;
-                    });
+                    settingsState.toggleNotifications(val);
                   },
                 ),
                 SwitchListTile(
                   secondary: const Icon(Icons.warning),
                   title: const Text("Location Safety Alert"),
-                  value: _locationWarningEnabled,
+                  value: settingsState.locationAlertEnabled,
                   onChanged: (val) {
-                    setState(() {
-                      _locationWarningEnabled = val;
-                    });
+                    settingsState.toggleLocationAlert(val);
                   },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.map),
-                  title: const Text("Map Style"),
-                  trailing: DropdownButton<String>(
-                    value: _selectedMapStyle,
-                    underline: const SizedBox(),
-                    items:
-                        _mapStyles.map((style) {
-                          return DropdownMenuItem(
-                            value: style,
-                            child: Text(style),
-                          );
-                        }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedMapStyle = value!;
-                      });
-                    },
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.language),
-                  title: const Text("Language"),
-                  trailing: DropdownButton<String>(
-                    value: _selectedLanguage,
-                    underline: const SizedBox(),
-                    items:
-                        _languages.map((lang) {
-                          return DropdownMenuItem(
-                            value: lang,
-                            child: Text(lang),
-                          );
-                        }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedLanguage = value!;
-                      });
-                      final localeCode = value == '中文' ? 'zh' : 'en';
-                      Provider.of<LocaleProvider>(
-                        context,
-                        listen: false,
-                      ).setLocale(localeCode);
-                    },
-                  ),
                 ),
                 ListTile(
                   leading: const Icon(Icons.brightness_6),
