@@ -14,8 +14,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _notificationsEnabled = true;
-  bool _locationWarningEnabled = true;
   String _selectedTheme = "System";
 
   final List<String> _themes = ['Light', 'Dark', 'System'];
