@@ -26,6 +26,14 @@ characters
 3.4
 file:///Users/qakight/.pub-cache/hosted/pub.dev/characters-1.4.0/
 file:///Users/qakight/.pub-cache/hosted/pub.dev/characters-1.4.0/lib/
+checked_yaml
+2.19
+file:///Users/qakight/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3/
+file:///Users/qakight/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3/lib/
+cli_util
+3.4
+file:///Users/qakight/.pub-cache/hosted/pub.dev/cli_util-0.4.2/
+file:///Users/qakight/.pub-cache/hosted/pub.dev/cli_util-0.4.2/lib/
 clock
 3.4
 file:///Users/qakight/.pub-cache/hosted/pub.dev/clock-1.1.2/
@@ -130,6 +138,10 @@ fixnum
 3.1
 file:///Users/qakight/.pub-cache/hosted/pub.dev/fixnum-1.1.1/
 file:///Users/qakight/.pub-cache/hosted/pub.dev/fixnum-1.1.1/lib/
+flutter_launcher_icons
+2.18
+file:///Users/qakight/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.13.1/
+file:///Users/qakight/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.13.1/lib/
 flutter_lints
 3.5
 file:///Users/qakight/.pub-cache/hosted/pub.dev/flutter_lints-5.0.0/
@@ -214,6 +226,10 @@ intl
 3.0
 file:///Users/qakight/.pub-cache/hosted/pub.dev/intl-0.19.0/
 file:///Users/qakight/.pub-cache/hosted/pub.dev/intl-0.19.0/lib/
+json_annotation
+3.0
+file:///Users/qakight/.pub-cache/hosted/pub.dev/json_annotation-4.9.0/
+file:///Users/qakight/.pub-cache/hosted/pub.dev/json_annotation-4.9.0/lib/
 latlong2
 3.0
 file:///Users/qakight/.pub-cache/hosted/pub.dev/latlong2-0.9.1/
