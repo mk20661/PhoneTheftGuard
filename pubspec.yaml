@@ -48,7 +48,6 @@ dependencies:
   http: ^1.0.0
   go_router: ^14.8.0
   google_fonts: ^6.2.1
-  month_year_picker: ^0.4.0+1
 
 
 flutter_native_splash:
