@@ -446,12 +446,6 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "month_year_picker",
-      "rootUri": "file:///Users/qakight/.pub-cache/hosted/pub.dev/month_year_picker-0.4.0+1",
-      "packageUri": "lib/",
-      "languageVersion": "3.4"
-    },
-    {
       "name": "nested",
       "rootUri": "file:///Users/qakight/.pub-cache/hosted/pub.dev/nested-1.0.0",
       "packageUri": "lib/",
@@ -686,7 +680,7 @@
       "languageVersion": "3.7"
     }
   ],
-  "generated": "2025-04-21T12:06:59.660717Z",
+  "generated": "2025-04-21T13:04:53.456779Z",
   "generator": "pub",
   "generatorVersion": "3.7.2",
   "flutterRoot": "file:///opt/homebrew/Caskroom/flutter/3.27.3/flutter",
