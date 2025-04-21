@@ -89,7 +89,6 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-
       GoRoute(
         path: '/profile',
         builder: (context, state) {
@@ -120,35 +119,16 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
-      GoRoute(
-        path: '/about', 
-        builder: (context, state) => const AboutPage()),
-      GoRoute(
-        path: '/privacy',
-        builder: (context, state) => const PrivacyPolicyPage(),
-      ),
-
+      GoRoute(path: '/about', builder: (context, state) => const AboutPage()),
+      GoRoute(path: '/privacy', builder: (context, state) => const PrivacyPolicyPage()),
       ShellRoute(
         builder: (context, state, child) => HomePage(child: child),
         routes: [
-          GoRoute(
-            path: '/home', 
-            builder: (context, state) => OSMMapPage()),
-          GoRoute(
-            path: '/search',
-            builder: (context, state) => SearchMapPage(),
-          ),
-          GoRoute(
-            path: '/history', 
-            builder: (context, state) => HistoryPage()),
-          GoRoute(
-            path: '/community',
-            builder: (context, state) => CommunityPage(),
-          ),
-          GoRoute(
-            path: '/setting',
-            builder: (context, state) => SettingsPage(),
-          ),
+          GoRoute(path: '/home', builder: (context, state) => OSMMapPage()),
+          GoRoute(path: '/search', builder: (context, state) => const SizedBox()), // placeholder
+          GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
+          GoRoute(path: '/community', builder: (context, state) => CommunityPage()),
+          GoRoute(path: '/setting', builder: (context, state) => SettingsPage()),
         ],
       ),
     ],
@@ -194,10 +174,29 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _onTap(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    context.go(_routes[index]);
+    if (index == 0) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => FractionallySizedBox(
+          heightFactor: 0.95,
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+            ),
+            child: const SearchMapPage(),
+          ),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+      context.go(_routes[index]);
+    }
   }
 
   @override
