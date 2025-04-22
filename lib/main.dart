@@ -27,7 +27,6 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ApplicationState()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
-        ChangeNotifierProvider(create: (_) => ApplicationState()),
         ChangeNotifierProvider(create: (_) => SettingsState()),
       ],
       child: MyApp(),
@@ -44,17 +43,19 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/sign-in',
         builder: (context, state) {
+          final from = state.extra;
+          final fromSettings = from is Map && from['from'] == 'settings';
           return SignInScreen(
             providers: [EmailAuthProvider()],
             actions: [
-              ForgotPasswordAction(((context, email) {
+              ForgotPasswordAction((context, email) {
                 final uri = Uri(
                   path: '/sign-in/forgot-password',
-                  queryParameters: <String, String?>{'email': email},
+                  queryParameters: {'email': email},
                 );
-                context.push(uri.toString());
-              })),
-              AuthStateChangeAction(((context, state) {
+                context.push(uri.toString(), extra: from);
+              }),
+              AuthStateChangeAction((context, state) {
                 final user = switch (state) {
                   SignedIn s => s.user,
                   UserCreated s => s.credential.user,
@@ -66,14 +67,32 @@ class MyApp extends StatelessWidget {
                 }
                 if (!user.emailVerified) {
                   user.sendEmailVerification();
-                  const snackBar = SnackBar(
-                    content: Text('Please verify your email'),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please verify your email')),
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
-                context.go('/community');
-              })),
+                if (fromSettings) {
+                  context.go('/setting');
+                } else {
+                  context.go('/community');
+                }
+              }),
             ],
+            headerBuilder: (context, constraints, _) {
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    if (fromSettings) {
+                      context.go('/setting');
+                    } else {
+                      context.go('/community');
+                    }
+                  },
+                ),
+              );
+            },
           );
         },
         routes: [
@@ -84,6 +103,45 @@ class MyApp extends StatelessWidget {
               return ForgotPasswordScreen(
                 email: arguments['email'],
                 headerMaxExtent: 200,
+                headerBuilder: (context, constraints, _) {
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        context.go("/sign-in");
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          GoRoute(
+            path: 'register',
+            builder: (context, state) {
+              return RegisterScreen(
+                providers: [EmailAuthProvider()],
+                showAuthActionSwitch: true,
+                actions: [
+                  AuthStateChangeAction((context, state) {
+                    if (state is SignedIn || state is UserCreated) {
+                      context.go('/sign-in');
+                    }
+                  }),
+                ],
+                headerMaxExtent: 120,
+                headerBuilder: (context, constraints, _) {
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        context.go("/sign-in");
+                      },
+                    ),
+                  );
+                },
               );
             },
           ),
@@ -93,7 +151,6 @@ class MyApp extends StatelessWidget {
         path: '/profile',
         builder: (context, state) {
           final from = (state.extra as Map?)?['from'] ?? 'community';
-
           return Scaffold(
             appBar: AppBar(
               title: const Text('Profile'),
@@ -120,15 +177,27 @@ class MyApp extends StatelessWidget {
         },
       ),
       GoRoute(path: '/about', builder: (context, state) => const AboutPage()),
-      GoRoute(path: '/privacy', builder: (context, state) => const PrivacyPolicyPage()),
+      GoRoute(
+        path: '/privacy',
+        builder: (context, state) => const PrivacyPolicyPage(),
+      ),
       ShellRoute(
         builder: (context, state, child) => HomePage(child: child),
         routes: [
           GoRoute(path: '/home', builder: (context, state) => OSMMapPage()),
-          GoRoute(path: '/search', builder: (context, state) => const SizedBox()), // placeholder
+          GoRoute(
+            path: '/search',
+            builder: (context, state) => const SizedBox(),
+          ),
           GoRoute(path: '/history', builder: (context, state) => HistoryPage()),
-          GoRoute(path: '/community', builder: (context, state) => CommunityPage()),
-          GoRoute(path: '/setting', builder: (context, state) => SettingsPage()),
+          GoRoute(
+            path: '/community',
+            builder: (context, state) => CommunityPage(),
+          ),
+          GoRoute(
+            path: '/setting',
+            builder: (context, state) => SettingsPage(),
+          ),
         ],
       ),
     ],
@@ -136,20 +205,86 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
-        final localeProvider = Provider.of<LocaleProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final localeProvider = Provider.of<LocaleProvider>(context);
 
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData.light(),
-          darkTheme: ThemeData.dark(),
-          themeMode: themeProvider.themeMode,
-          locale: localeProvider.locale,
-          routerConfig: _router,
-        );
-      },
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'Winky_Rough',
+        scaffoldBackgroundColor: const Color(0xFFE6F0FA),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFB3D1F2),
+          foregroundColor: Colors.black,
+          centerTitle: true,
+          elevation: 1,
+        ),
+        dialogTheme: DialogTheme(
+          backgroundColor: Colors.white,
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          titleTextStyle: const TextStyle(
+            fontFamily: 'Nunito',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          contentTextStyle: const TextStyle(
+            fontFamily: 'Poppins',
+            fontSize: 16,
+            color: Colors.black87,
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          selectedLabelStyle: TextStyle(
+            fontFamily: 'BubblegumSans',
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+          unselectedLabelStyle: TextStyle(
+            fontFamily: 'BubblegumSans',
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        cardTheme: const CardTheme(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          elevation: 2,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF4A90E2),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Color(0xFF4A90E2),
+            side: const BorderSide(color: Color(0xFF4A90E2)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          ),
+        ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color(0xFF4A90E2),
+          secondary: const Color(0xFFB3D1F2),
+        ),
+      ),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.themeMode,
+      locale: localeProvider.locale,
+      routerConfig: _router,
     );
   }
 }
@@ -180,16 +315,17 @@ class _HomePageState extends State<HomePage> {
         isScrollControlled: true,
         useSafeArea: true,
         backgroundColor: Colors.transparent,
-        builder: (context) => FractionallySizedBox(
-          heightFactor: 0.95,
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+        builder:
+            (context) => FractionallySizedBox(
+              heightFactor: 0.95,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                ),
+                child: const SearchMapPage(),
+              ),
             ),
-            child: const SearchMapPage(),
-          ),
-        ),
       );
     } else {
       setState(() {
@@ -207,7 +343,7 @@ class _HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onTap,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: const Color(0xFF4A90E2),
         unselectedItemColor: Colors.grey,
         iconSize: 28,
         showUnselectedLabels: true,

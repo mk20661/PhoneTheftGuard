@@ -7,17 +7,18 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final from = GoRouterState.of(context).extra;
+    final fromSettings = from is Map && from['from'] == 'settings';
+
     return SignInScreen(
-      providers: [
-        EmailAuthProvider(),
-      ],
+      providers: [EmailAuthProvider()],
       actions: [
         ForgotPasswordAction((context, email) {
           final uri = Uri(
             path: '/login/forgot-password',
             queryParameters: {'email': email},
           );
-          context.push(uri.toString());
+          context.push(uri.toString(), extra: from);
         }),
         AuthStateChangeAction((context, state) {
           final user = switch (state) {
@@ -38,9 +39,28 @@ class LoginPage extends StatelessWidget {
               const SnackBar(content: Text('Please verify your email')),
             );
           }
-          context.go('/community');
+          if (fromSettings) {
+            context.go('/setting');
+          } else {
+            context.go('/community');
+          }
         }),
       ],
+      headerBuilder: (context, constraints, _) {
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (fromSettings) {
+                context.go('/setting');
+              } else {
+                context.go('/community');
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

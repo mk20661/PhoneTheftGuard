@@ -102,19 +102,18 @@ class OSMMapPage extends StatelessWidget {
                   Future.delayed(Duration.zero, () {
                     showDialog(
                       context: context,
-                      builder:
-                          (context) => AlertDialog(
-                            title: const Text("⚠️ High Risk Area"),
-                            content: const Text(
-                              "You're in a high-risk phone theft area! Stay alert.",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text("OK"),
-                              ),
-                            ],
+                      builder: (context) => AlertDialog(
+                        title: const Text("⚠️ High Risk Area"),
+                        content: const Text(
+                          "You're in a high-risk phone theft area! Stay alert.",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text("OK"),
                           ),
+                        ],
+                      ),
                     );
                   });
                 }
@@ -136,6 +135,10 @@ class OSMMapPage extends StatelessWidget {
 
                     return Scaffold(
                       backgroundColor: Colors.white,
+                      appBar: AppBar(
+                        title: const Text('Phone Theft Radar'),
+                        centerTitle: true,
+                      ),
                       body: SafeArea(
                         child: SingleChildScrollView(
                           child: Column(

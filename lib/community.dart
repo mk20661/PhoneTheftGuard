@@ -37,6 +37,7 @@ class _CommunityPageState extends State<CommunityPage> {
       'author': user.email ?? user.uid,
       'displayName': user.displayName ?? 'Anonymous',
       'likes': 0,
+      'likedBy': [],
       'uid': user.uid,
     });
 
@@ -45,8 +46,10 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   Future<void> _refreshPosts() async {
-    _posts.clear();
-    _lastDocument = null;
+    setState(() {
+      _posts.clear();
+      _lastDocument = null;
+    });
     await _loadMorePosts();
   }
 
@@ -75,147 +78,238 @@ class _CommunityPageState extends State<CommunityPage> {
   }
 
   void _showEditDialog(String docId, String oldContent) {
-    final TextEditingController editController = TextEditingController(
-      text: oldContent,
-    );
+    final TextEditingController editController =
+        TextEditingController(text: oldContent);
 
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Edit Post'),
-            content: TextField(
-              controller: editController,
-              maxLines: null,
-              decoration: const InputDecoration(labelText: 'Your post'),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await FirebaseFirestore.instance
-                      .collection('posts')
-                      .doc(docId)
-                      .update({'content': editController.text});
-                  Navigator.of(context).pop();
-                  _refreshPosts();
-                },
-                child: const Text('Save'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Post'),
+        content: TextField(
+          controller: editController,
+          maxLines: null,
+          decoration: const InputDecoration(labelText: 'Your post'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              await FirebaseFirestore.instance
+                  .collection('posts')
+                  .doc(docId)
+                  .update({'content': editController.text});
+              Navigator.of(context).pop();
+              _refreshPosts();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Community Page')),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        children: <Widget>[
-          const SizedBox(height: 8),
-          const IconAndDetail(Icons.people, 'Community Events'),
-          const IconAndDetail(Icons.shield, 'Phone Theft Awareness'),
-          Consumer<ApplicationState>(
-            builder:
-                (context, appState, _) => AuthFunc(
-                  loggedIn: appState.loggedIn,
-                  signOut: () {
-                    FirebaseAuth.instance.signOut();
-                  },
+      appBar: AppBar(
+        title: const Text('📢 Anti-Theft Community'),
+      ),
+      body: Consumer<ApplicationState>(
+        builder: (context, appState, _) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          return ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            children: <Widget>[
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const IconAndDetail(Icons.feed, 'Real Incidents'),
+                      const IconAndDetail(Icons.shield, 'Phone Theft Awareness'),
+                      const SizedBox(height: 8),
+                      AuthFunc(
+                        loggedIn: appState.loggedIn,
+                        signOut: () => FirebaseAuth.instance.signOut(),
+                      ),
+                    ],
+                  ),
                 ),
-          ),
-          const Divider(height: 16, thickness: 1, color: Colors.grey),
-          const Header('Discussion'),
-          const Paragraph(
-            'Join the community conversation and share your experiences.',
-          ),
-          const SizedBox(height: 8),
-          if (user != null) ...[
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Share your insight...',
-                border: OutlineInputBorder(),
               ),
-              maxLines: null,
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () => _postMessage(_controller.text, user),
-              child: const Text('Post'),
-            ),
-          ] else
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Text(
-                'Please log in to participate in the discussion.',
-                style: TextStyle(color: Colors.grey),
+              const SizedBox(height: 16),
+              const Header('🛡️ Share Your Story'),
+              const Paragraph(
+                'Have you experienced or witnessed phone theft? Share your story to help others stay alert.',
               ),
-            ),
-          const Divider(),
-          const Text(
-            'Community Posts:',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8),
-          ..._posts.map((doc) {
-            final data = doc.data()! as Map<String, dynamic>;
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 6),
-              child: ListTile(
-                title: Text(data['content'] ?? ''),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('By ${data['displayName'] ?? 'Unknown'}'),
-                    Row(
+              const SizedBox(height: 12),
+              if (appState.loggedIn && user != null) ...[
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.thumb_up),
-                          onPressed: () {
-                            doc.reference.update({
-                              'likes': FieldValue.increment(1),
-                            });
-                          },
+                        TextField(
+                          controller: _controller,
+                          decoration: InputDecoration(
+                            hintText: 'Write your experience or advice...',
+                            filled: true,
+                            fillColor: Colors.grey[100],
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          maxLines: null,
                         ),
-                        Text('${data['likes'] ?? 0}'),
-                        if (user != null && data['uid'] == user.uid) ...[
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              _showEditDialog(doc.id, data['content']);
-                            },
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _postMessage(_controller.text, user),
+                            icon: const Icon(Icons.send),
+                            label: const Text('Post'),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () async {
-                              await doc.reference.delete();
-                              _refreshPosts();
-                            },
-                          ),
-                        ],
+                        ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
+              ] else
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Text(
+                    'Please log in to participate in the discussion.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+              const SizedBox(height: 24),
+              const Row(
+                children: [
+                  Icon(Icons.article_outlined, color: Colors.blue),
+                  SizedBox(width: 6),
+                  Text(
+                    'Community Posts',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-            );
-          }).toList(),
-          if (!_isLoading && _lastDocument != null)
-            Center(
-              child: TextButton(
-                onPressed: _loadMorePosts,
-                child: const Text('Load more'),
-              ),
-            ),
-        ],
+              const SizedBox(height: 12),
+              ..._posts.map((doc) {
+                final data = doc.data()! as Map<String, dynamic>;
+                final likedBy = List<String>.from(data['likedBy'] ?? []);
+                final isLiked = user != null && likedBy.contains(user.uid);
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(data['content'] ?? '',
+                            style: const TextStyle(fontSize: 16)),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            const Icon(Icons.person, size: 16, color: Colors.grey),
+                            const SizedBox(width: 6),
+                            Text('By ${data['displayName'] ?? 'Unknown'}',
+                                style: const TextStyle(color: Colors.grey)),
+                            const Spacer(),
+                            IconButton(
+                              icon: Icon(
+                                isLiked
+                                    ? Icons.thumb_up_alt
+                                    : Icons.thumb_up_alt_outlined,
+                                size: 20,
+                                color: isLiked ? Colors.blue : null,
+                              ),
+                              onPressed: user == null
+                                  ? null
+                                  : () async {
+                                      final postRef = doc.reference;
+
+                                      if (isLiked) {
+                                        await postRef.update({
+                                          'likes': FieldValue.increment(-1),
+                                          'likedBy': FieldValue.arrayRemove([user.uid]),
+                                        });
+                                      } else {
+                                        await postRef.update({
+                                          'likes': FieldValue.increment(1),
+                                          'likedBy': FieldValue.arrayUnion([user.uid]),
+                                        });
+                                      }
+
+                                      _refreshPosts();
+                                    },
+                            ),
+                            Text('${data['likes'] ?? 0}'),
+                            if (user != null && data['uid'] == user.uid) ...[
+                              IconButton(
+                                icon: const Icon(Icons.edit, size: 20),
+                                onPressed: () =>
+                                    _showEditDialog(doc.id, data['content']),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete, size: 20),
+                                onPressed: () async {
+                                  final confirmed = await showDialog<bool>(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Confirm Delete'),
+                                      content: const Text(
+                                          'Are you sure you want to delete this post?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(false),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(true),
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+
+                                  if (confirmed == true) {
+                                    await doc.reference.delete();
+                                    _refreshPosts();
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text('Post deleted')),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+              if (!_isLoading && _lastDocument != null)
+                Center(
+                  child: OutlinedButton.icon(
+                    onPressed: _loadMorePosts,
+                    icon: const Icon(Icons.expand_more),
+                    label: const Text('Load more'),
+                  ),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

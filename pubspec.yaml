@@ -48,6 +48,8 @@ dependencies:
   http: ^1.0.0
   go_router: ^14.8.0
   google_fonts: ^6.2.1
+  image_picker: ^1.0.4
+  firebase_storage: ^12.4.5
 
 
 flutter_native_splash:
@@ -79,6 +81,18 @@ flutter:
     - assets/geojson/PhoneTheft.geojson
     - assets/geojson/PhoneTheftTotalWithColor(Geometry).csv
     - assets/geojson/PhoneTheft_Total_Only.csv
+  
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito/Nunito-VariableFont_wght.ttf
+    - family: BubblegumSans
+      fonts:
+        - asset: assets/fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf
+    - family: Winky_Rough
+      fonts:
+        - asset: assets/fonts/Winky_Rough/WinkyRough-VariableFont_wght.ttf
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -87,6 +101,7 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/img/startLogo.png"
+  
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -157,7 +157,7 @@ class _HistoryPageState extends State<HistoryPage> {
     final selectedMonthStr = "${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}";
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Phone Theft Heatmap')),
+      appBar: AppBar(title: const Text('History Heatmap')),
       body: Column(
         children: [
           Expanded(

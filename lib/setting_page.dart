@@ -15,12 +15,13 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   String _selectedTheme = "System";
-
   final List<String> _themes = ['Light', 'Dark', 'System'];
 
   @override
   Widget build(BuildContext context) {
     final settingsState = Provider.of<SettingsState>(context);
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       backgroundColor: const Color(0xFFE6F0FA),
       appBar: AppBar(
@@ -45,6 +46,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text("Edit Profile"),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
+                    if (user == null) {
+                      _showLoginDialog(context, "edit your profile");
+                      return;
+                    }
                     context.push('/profile', extra: {'from': 'settings'});
                   },
                 ),
@@ -53,12 +58,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text("Change Password"),
                   trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    final user = FirebaseAuth.instance.currentUser;
-                    if (user != null && user.email != null) {
-                      context.push(
-                        '/sign-in/forgot-password?email=${Uri.encodeComponent(user.email!)}',
-                      );
+                    if (user == null || user.email == null) {
+                      _showLoginDialog(context, "change your password");
+                      return;
                     }
+                    context.push(
+                      '/sign-in/forgot-password?email=${Uri.encodeComponent(user.email!)}',
+                      extra: {'from': 'settings'},
+                    );
                   },
                 ),
               ],
@@ -97,13 +104,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing: DropdownButton<String>(
                     value: _selectedTheme,
                     underline: const SizedBox(),
-                    items:
-                        _themes.map((theme) {
-                          return DropdownMenuItem(
-                            value: theme,
-                            child: Text(theme),
-                          );
-                        }).toList(),
+                    items: _themes.map((theme) {
+                      return DropdownMenuItem(
+                        value: theme,
+                        child: Text(theme),
+                      );
+                    }).toList(),
                     onChanged: (value) {
                       setState(() {
                         _selectedTheme = value!;
@@ -161,36 +167,46 @@ class _SettingsPageState extends State<SettingsPage> {
               borderRadius: BorderRadius.circular(16),
             ),
             elevation: 2,
-            child: ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text("Log Out", style: TextStyle(color: Colors.red)),
-              onTap: () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder:
-                      (ctx) => AlertDialog(
-                        title: const Text("Confirm Logout"),
-                        content: const Text(
-                          "Are you sure you want to log out?",
+            child: user != null
+                ? ListTile(
+                    leading: const Icon(Icons.logout, color: Colors.red),
+                    title: const Text("Log Out",
+                        style: TextStyle(color: Colors.red)),
+                    onTap: () async {
+                      final confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text("Confirm Logout"),
+                          content:
+                              const Text("Are you sure you want to log out?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(false),
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(true),
+                              child: const Text("Log Out"),
+                            ),
+                          ],
                         ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(ctx).pop(false),
-                            child: const Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(ctx).pop(true),
-                            child: const Text("Log Out"),
-                          ),
-                        ],
-                      ),
-                );
-                if (confirm == true) {
-                  await FirebaseAuth.instance.signOut();
-                  if (context.mounted) context.go('/sign-in');
-                }
-              },
-            ),
+                      );
+                      if (confirm == true) {
+                        await FirebaseAuth.instance.signOut();
+                        if (context.mounted) {
+                          context.go('/sign-in', extra: {'from': 'settings'});
+                        }
+                      }
+                    },
+                  )
+                : ListTile(
+                    leading: const Icon(Icons.login, color: Colors.blue),
+                    title: const Text("Log In",
+                        style: TextStyle(color: Colors.blue)),
+                    onTap: () {
+                      context.go('/sign-in', extra: {'from': 'settings'});
+                    },
+                  ),
           ),
         ],
       ),
@@ -207,6 +223,22 @@ class _SettingsPageState extends State<SettingsPage> {
           fontWeight: FontWeight.bold,
           color: Colors.black54,
         ),
+      ),
+    );
+  }
+
+  void _showLoginDialog(BuildContext context, String action) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Login Required"),
+        content: Text("Please sign in to $action."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text("OK"),
+          ),
+        ],
       ),
     );
   }

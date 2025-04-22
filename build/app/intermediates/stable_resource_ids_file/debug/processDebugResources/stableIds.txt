@@ -1,4 +1,4 @@
-com.example.phonetheftguard:xml/image_share_filepaths = 0x7f0f0000
+com.example.phonetheftguard:xml/image_share_filepaths = 0x7f0f0001
 com.example.phonetheftguard:styleable/SignInButton = 0x7f0e000b
 com.example.phonetheftguard:styleable/Fragment = 0x7f0e0006
 com.example.phonetheftguard:style/Theme.Hidden = 0x7f0d0007
@@ -272,6 +272,7 @@ com.example.phonetheftguard:style/TextAppearance.Compat.Notification.Title = 0x7
 com.example.phonetheftguard:id/visible_removing_fragment_view_tag = 0x7f070069
 com.example.phonetheftguard:attr/lStar = 0x7f030019
 com.example.phonetheftguard:attr/fontProviderFetchTimeout = 0x7f030010
+com.example.phonetheftguard:xml/flutter_image_picker_file_paths = 0x7f0f0000
 com.example.phonetheftguard:string/call_notification_incoming_text = 0x7f0c0007
 com.example.phonetheftguard:drawable/common_google_signin_btn_icon_disabled = 0x7f060006
 com.example.phonetheftguard:attr/imageAspectRatio = 0x7f030017
