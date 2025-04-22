@@ -219,19 +219,19 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
           elevation: 1,
         ),
-        dialogTheme: DialogTheme(
+        dialogTheme: const DialogThemeData(
           backgroundColor: Colors.white,
           elevation: 8,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          titleTextStyle: const TextStyle(
+          titleTextStyle: TextStyle(
             fontFamily: 'Nunito',
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
-          contentTextStyle: const TextStyle(
+          contentTextStyle: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 16,
             color: Colors.black87,
@@ -249,7 +249,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w400,
           ),
         ),
-        cardTheme: const CardTheme(
+        cardTheme: const CardThemeData(
           color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -258,7 +258,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF4A90E2),
+            backgroundColor: const Color(0xFF4A90E2),
             foregroundColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -268,7 +268,7 @@ class MyApp extends StatelessWidget {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: Color(0xFF4A90E2),
+            foregroundColor: const Color(0xFF4A90E2),
             side: const BorderSide(color: Color(0xFF4A90E2)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -281,6 +281,7 @@ class MyApp extends StatelessWidget {
           secondary: const Color(0xFFB3D1F2),
         ),
       ),
+
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.themeMode,
       locale: localeProvider.locale,
