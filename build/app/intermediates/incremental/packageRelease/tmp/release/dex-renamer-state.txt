@@ -1,4 +1,0 @@
-#Sun Apr 27 16:51:23 BST 2025
-base.0=/Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
