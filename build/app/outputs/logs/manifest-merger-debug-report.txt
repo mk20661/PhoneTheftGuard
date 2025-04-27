@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 application
-INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:6:5-37:19
+INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:7:5-39:19
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml
 MERGED from [:geolocator_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geolocator_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
 MERGED from [:geolocator_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geolocator_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-13:19
@@ -73,8 +73,8 @@ MERGED from [com.google.android.play:core-common:2.0.3] /Users/qakight/.gradle/c
 	android:name
 		INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml
 manifest
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:1:1-49:12
-MERGED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:1:1-49:12
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:1:1-51:12
+MERGED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:1:1-51:12
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:1:1-7:12
@@ -91,6 +91,7 @@ MERGED from [:image_picker_android] /Users/qakight/Desktop/CASA0015/casa0015-mob
 MERGED from [:flutter_plugin_android_lifecycle] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/flutter_plugin_android_lifecycle/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:geocoding_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geocoding_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:path_provider_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [:permission_handler_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.firebase:firebase-dynamic-links:22.1.0] /Users/qakight/.gradle/caches/8.10.2/transforms/a25bd7937efaa41608df7ee8ec9fc286/transformed/jetified-firebase-dynamic-links-22.1.0/AndroidManifest.xml:15:1-33:12
 MERGED from [com.google.firebase:firebase-firestore:25.1.3] /Users/qakight/.gradle/caches/8.10.2/transforms/bb728f7ea1255e726259cb05934732da/transformed/jetified-firebase-firestore-25.1.3/AndroidManifest.xml:2:1-26:12
@@ -168,20 +169,10 @@ uses-permission#android.permission.POST_NOTIFICATIONS
 ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:5:5-76
 	android:name
 		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:5:22-74
-queries
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:43:5-48:15
-intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:44:9-47:18
-action#android.intent.action.PROCESS_TEXT
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:13-72
-	android:name
-		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:21-70
-data
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:46:13-50
-	android:mimeType
-		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:46:19-48
 uses-permission#android.permission.INTERNET
-ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:6:5-66
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:6:5-67
+MERGED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:6:5-67
+MERGED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:6:5-67
 MERGED from [:firebase_dynamic_links] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/firebase_dynamic_links/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-67
 MERGED from [:firebase_dynamic_links] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/firebase_dynamic_links/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:7:5-67
 MERGED from [com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:25:5-67
@@ -193,7 +184,19 @@ MERGED from [com.google.firebase:firebase-storage:21.0.1] /Users/qakight/.gradle
 MERGED from [com.google.android.recaptcha:recaptcha:18.6.1] /Users/qakight/.gradle/caches/8.10.2/transforms/63c8215b4ef0ce806491a9ae657bddeb/transformed/jetified-recaptcha-18.6.1/AndroidManifest.xml:7:5-67
 MERGED from [com.google.android.recaptcha:recaptcha:18.6.1] /Users/qakight/.gradle/caches/8.10.2/transforms/63c8215b4ef0ce806491a9ae657bddeb/transformed/jetified-recaptcha-18.6.1/AndroidManifest.xml:7:5-67
 	android:name
-		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml:6:22-64
+		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:6:22-64
+queries
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:45:5-50:15
+intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:46:9-49:18
+action#android.intent.action.PROCESS_TEXT
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:47:13-72
+	android:name
+		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:47:21-70
+data
+ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:48:13-50
+	android:mimeType
+		ADDED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/main/AndroidManifest.xml:48:19-48
 uses-sdk
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/android/app/src/debug/AndroidManifest.xml
@@ -224,6 +227,8 @@ MERGED from [:geocoding_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile
 MERGED from [:geocoding_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/geocoding_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:path_provider_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/path_provider_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [:permission_handler_android] /Users/qakight/Desktop/CASA0015/casa0015-mobile-assessment/build/permission_handler_android/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:21:5-23:151
 MERGED from [com.google.firebase:firebase-auth:23.2.0] /Users/qakight/.gradle/caches/8.10.2/transforms/633413bad6a67ccffb521b72ab86b298/transformed/jetified-firebase-auth-23.2.0/AndroidManifest.xml:21:5-23:151
 MERGED from [com.google.firebase:firebase-dynamic-links:22.1.0] /Users/qakight/.gradle/caches/8.10.2/transforms/a25bd7937efaa41608df7ee8ec9fc286/transformed/jetified-firebase-dynamic-links-22.1.0/AndroidManifest.xml:18:5-44

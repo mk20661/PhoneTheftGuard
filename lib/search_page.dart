@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:phonetheftguard/global_data.dart';
+import 'package:phonetheftguard/global_data.dart'; // 你自己的 theft 数据加载
 
 class SearchMapPage extends StatefulWidget {
   const SearchMapPage({Key? key}) : super(key: key);
@@ -17,79 +16,87 @@ class _SearchMapPageState extends State<SearchMapPage> {
   final MapController _mapController = MapController();
   final TextEditingController _searchController = TextEditingController();
 
-  LatLng _currentCenter = LatLng(51.5074, -0.1278);
-
+  LatLng _currentCenter = LatLng(51.5074, -0.1278); // 默认伦敦
   String _address = '';
   String _lsoaCode = 'Unknown';
   int _thefts = 0;
 
   Future<void> _searchAndMove(String query) async {
+    if (query.trim().isEmpty) {
+      _showError("Please enter a search term");
+      return;
+    }
+
     try {
-      List<Location> locations = await locationFromAddress(query);
-      if (locations.isNotEmpty) {
-        final newCenter = LatLng(locations[0].latitude, locations[0].longitude);
-        final lsoa = await getLSOACodeFromQuery(query);
-        final theftData = await loadLSOATheftCounts();
-        final thefts = theftData[lsoa] ?? 0;
-
-        final placemarks = await placemarkFromCoordinates(
-          newCenter.latitude,
-          newCenter.longitude,
-        );
-        final placemark = placemarks.first;
-        final address =
-            "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
-
-        setState(() {
-          _currentCenter = newCenter;
-          _lsoaCode = lsoa;
-          _thefts = thefts;
-          _address = address;
-        });
-
-        _mapController.move(newCenter, 15.0);
-      } else {
+      final locationData = await getLocationDataFromQuery(query);
+      if (locationData == null) {
         _showError("Location not found");
+        return;
       }
+
+      final lat = locationData['lat'];
+      final lon = locationData['lon'];
+      final address = locationData['address'];
+
+      final lsoa = await getLSOACodeFromCoordinates(lat, lon);
+      final theftData = await loadLSOATheftCounts();
+      final thefts = theftData[lsoa] ?? 0;
+
+      setState(() {
+        _currentCenter = LatLng(lat, lon);
+        _address = address;
+        _lsoaCode = lsoa;
+        _thefts = thefts;
+      });
+
+      _mapController.move(LatLng(lat, lon), 15.0);
     } catch (e) {
       _showError("Search error: $e");
     }
   }
 
-  Future<String> getLSOACodeFromQuery(String query) async {
-    final isPostcode = RegExp(
-      r'^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$',
-      caseSensitive: false,
-    ).hasMatch(query.trim());
-    try {
-      String postcode = query.trim();
+  Future<Map<String, dynamic>?> getLocationDataFromQuery(String query) async {
+    final url = 'https://nominatim.openstreetmap.org/search?q=${Uri.encodeComponent(query)}&format=json&limit=1&addressdetails=1';
+    final response = await http.get(Uri.parse(url), headers: {
+      'User-Agent': 'PhoneTheftGuardApp/1.0 (your_email@example.com)'
+    });
 
-      if (!isPostcode) {
-        final locations = await locationFromAddress(query);
-        if (locations.isEmpty) return 'Unknown';
-        final lat = locations[0].latitude;
-        final lon = locations[0].longitude;
-
-        final placemarks = await placemarkFromCoordinates(lat, lon);
-        final placemark = placemarks.first;
-        postcode = placemark.postalCode ?? '';
-        if (postcode.isEmpty) return 'Unknown';
+    if (response.statusCode == 200) {
+      final List data = json.decode(response.body);
+      if (data.isNotEmpty) {
+        final lat = double.parse(data[0]['lat']);
+        final lon = double.parse(data[0]['lon']);
+        final displayName = data[0]['display_name'];
+        return {
+          'lat': lat,
+          'lon': lon,
+          'address': displayName,
+        };
       }
+    }
+    return null;
+  }
 
-      final url =
-          'https://api.postcodes.io/postcodes/${Uri.encodeComponent(postcode)}';
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        if (data['status'] == 200 && data['result'] != null) {
-          final lsoa = data['result']['codes']['lsoa'];
-          return lsoa ?? 'Unknown';
+  Future<String> getLSOACodeFromCoordinates(double lat, double lon) async {
+    final url = 'https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon&format=json&addressdetails=1';
+    final response = await http.get(Uri.parse(url), headers: {
+      'User-Agent': 'PhoneTheftGuardApp/1.0 (your_email@example.com)'
+    });
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final postcode = data['address']?['postcode'];
+      if (postcode != null) {
+        final postcodeUrl = 'https://api.postcodes.io/postcodes/${Uri.encodeComponent(postcode)}';
+        final postcodeResponse = await http.get(Uri.parse(postcodeUrl));
+        if (postcodeResponse.statusCode == 200) {
+          final postcodeData = json.decode(postcodeResponse.body);
+          if (postcodeData['status'] == 200 && postcodeData['result'] != null) {
+            return postcodeData['result']['codes']['lsoa'] ?? 'Unknown';
+          }
         }
       }
-    } catch (e) {
-      print("❌ getLSOACodeFromQuery failed: $e");
     }
-
     return 'Unknown';
   }
 
@@ -102,9 +109,7 @@ class _SearchMapPageState extends State<SearchMapPage> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -112,13 +117,13 @@ class _SearchMapPageState extends State<SearchMapPage> {
     final riskColor = getColor(_thefts);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // ✅ 移除默认返回按钮
+        automaticallyImplyLeading: false,
         title: const Text("Search Location"),
         actions: [
           IconButton(
             icon: const Icon(Icons.close),
             onPressed: () {
-              Navigator.of(context).pop(); // ✅ 自定义关闭按钮
+              Navigator.of(context).pop();
             },
           ),
         ],
@@ -129,7 +134,7 @@ class _SearchMapPageState extends State<SearchMapPage> {
             const Padding(
               padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
               child: Text(
-                'Hi, where would you like to go?\nCheck the area is safe for Phone',
+                'Hi, where would you like to go?\nCheck if it’s safe for your phone',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.left,
               ),
@@ -159,8 +164,7 @@ class _SearchMapPageState extends State<SearchMapPage> {
                     options: MapOptions(center: _currentCenter, zoom: 13),
                     children: [
                       TileLayer(
-                        urlTemplate:
-                            "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                       ),
                       MarkerLayer(
                         markers: [
