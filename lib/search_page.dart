@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:phonetheftguard/global_data.dart'; // 你自己的 theft 数据加载
+import 'package:phonetheftguard/global_data.dart';
 
 class SearchMapPage extends StatefulWidget {
   const SearchMapPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _SearchMapPageState extends State<SearchMapPage> {
   final MapController _mapController = MapController();
   final TextEditingController _searchController = TextEditingController();
 
-  LatLng _currentCenter = LatLng(51.5074, -0.1278); // 默认伦敦
+  LatLng _currentCenter = LatLng(51.5074, -0.1278);
   String _address = '';
   String _lsoaCode = 'Unknown';
   int _thefts = 0;
