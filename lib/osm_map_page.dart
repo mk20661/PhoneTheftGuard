@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'global_data.dart';
@@ -51,6 +50,24 @@ class OSMMapPage extends StatelessWidget {
     }
 
     return 'Unknown';
+  }
+
+  Future<String> reverseGeocode(double lat, double lon) async {
+    final url =
+        'https://nominatim.openstreetmap.org/reverse?lat=$lat&lon=$lon&format=json';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'User-Agent': 'PhoneTheftGuardApp/1.0 (your_email@example.com)',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['display_name'] ?? 'Unknown address';
+    } else {
+      return 'Unknown address';
+    }
   }
 
   Color getColor(int thefts) {
@@ -102,36 +119,32 @@ class OSMMapPage extends StatelessWidget {
                   Future.delayed(Duration.zero, () {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text("⚠️ High Risk Area"),
-                        content: const Text(
-                          "You're in a high-risk phone theft area! Stay alert.",
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("OK"),
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text("⚠️ High Risk Area"),
+                            content: const Text(
+                              "You're in a high-risk phone theft area! Stay alert.",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text("OK"),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                     );
                   });
                 }
 
-                return FutureBuilder<List<Placemark>>(
-                  future: placemarkFromCoordinates(
-                    position.latitude,
-                    position.longitude,
-                  ),
-                  builder: (context, placemarkSnapshot) {
-                    if (!placemarkSnapshot.hasData) {
+                return FutureBuilder<String>(
+                  future: reverseGeocode(position.latitude, position.longitude),
+                  builder: (context, addressSnapshot) {
+                    if (!addressSnapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
                     }
 
-                    final placemark = placemarkSnapshot.data!.first;
-                    final address =
-                        "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
-                    globalAddress = "${placemark.locality}";
+                    final address = addressSnapshot.data!;
+                    globalAddress = address;
 
                     return Scaffold(
                       backgroundColor: Colors.white,
@@ -214,48 +227,46 @@ class OSMMapPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      "\u{1F4CD} Current Location:",
+                                      "📍 Current Location:",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         color: Colors.white,
                                       ),
                                     ),
+                                    const SizedBox(height: 8),
                                     Text(
                                       address,
                                       style: const TextStyle(
                                         fontSize: 16,
                                         color: Colors.white,
                                       ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 10),
-                                    const Text(
-                                      "LSOA Code:",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      "LSOA: $lsoaCode",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white70,
                                       ),
                                     ),
+                                    const SizedBox(height: 8),
                                     Text(
-                                      lsoaCode,
+                                      "$thefts phone thefts reported",
                                       style: const TextStyle(
                                         fontSize: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      "$thefts phone thefts in this area",
-                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
                                     ),
+                                    const SizedBox(height: 6),
                                     Text(
                                       thefts > 15
-                                          ? "\u{26A0}\u{FE0F} High phone theft risk"
-                                          : "\u{2705} Low phone theft risk",
+                                          ? "⚠️ High risk area"
+                                          : "✅ Low risk area",
                                       style: const TextStyle(
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
