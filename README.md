@@ -11,8 +11,14 @@ Welcome to **Phone Theft Guard**, a mobile app developed for the final assessmen
 - 🌍 **Interactive Map**: Visualize mobile theft hotspots across London.
 - ⏰ **Real-time Alerts**: Receive warnings when entering high-risk zones.
 - 🔀 **Timeline Slider**: Explore theft data trends month-by-month.
-- 👤 **User Profile**: Manage your settings, preferences, and login via Firebase Auth.
-- 🌐 **Bilingual Support**: Switch between English and Chinese.
+- 👤 **User Profile**: Manage your settings, preferences, and login via Firebase. 
+- ⚙️ **Settings**:
+
+  - Update your account information and reset your password.
+
+  - Enable or disable real-time alerts and notifications.
+
+  - Switch between Light and Dark themes for a personalized experience.
 
 ### Tech Stack & Frameworks Used:
 
@@ -34,32 +40,50 @@ Welcome to **Phone Theft Guard**, a mobile app developed for the final assessmen
 
 ## 🔧 Installation Instructions
 
-### Requirements
+### 1. Requirements
 
-- Flutter 3.16.0 or newer
-- Dart 3.2.0 or newer
-- Android Studio / Xcode (for emulation)
-- Firebase CLI configured (for authentication)
+Make sure you have the following installed:
 
-### Steps
+- **Flutter** 3.16.0 or newer
+- **Dart** 3.2.0 or newer
+- **Android Studio** or **Xcode** (for running emulators)
+- **Firebase CLI** configured (for authentication setup)
 
-```bash
-git clone https://github.com/your-username/phone-theft-guard.git
-cd phone-theft-guard
-flutter pub get
-```
+### 2. Installation Methods
 
-Set up Firebase:
+#### Option 1: Build from Source
 
-- Add your `google-services.json` (Android) or `GoogleService-Info.plist` (iOS) files.
+1. Clone the repository:
 
-Run the app:
+    ```bash
+    git clone https://github.com/your-username/phone-theft-guard.git
+    cd phone-theft-guard
+    ```
 
-```bash
-flutter run
-```
+2. Install dependencies:
 
----
+    ```bash
+    flutter pub get
+    ```
+
+3. Set up Firebase:
+
+    - For **Android**: Add your `google-services.json` file into the `android/app/` directory.
+
+4. Run the app:
+
+    ```bash
+    flutter run
+    ```
+
+#### Option 2: Download APK
+
+- Download the latest APK release directly from the [Releases](https://github.com/mk20661/PhoneTheftGuard/releases) page.
+- Install the APK on your Android device.
+- Make sure \"Allow installation from unknown sources\" is enabled in your device settings.
+
+> ⚠️ Note: Some features such as real-time alerts require location permissions.
+
 
 ## 📅 Plugins & Versions
 
@@ -83,9 +107,9 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 📣 Contact Details
 
-Developed by: **Your Name**  
-Email: your.email@example.com  
-GitHub: [your-github-username](https://github.com/your-github-username)
+Developed by: **Hongbing Qiu**  
+Email: qakightbing@163.com 
+GitHub: [mk20661](https://github.com/mk20661)
 
 Feel free to reach out if you want to collaborate, ask questions, or simply share your feedback! 😄
 
