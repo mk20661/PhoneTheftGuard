@@ -1,3 +1,6 @@
 android/
 ios/
 macOS/
+.vscode/
+windows/
+linux/
