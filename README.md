@@ -73,7 +73,8 @@ Make sure you have the following installed:
 4. Run the app:
 
     ```bash
-    flutter run
+    flutter build apk --release
+    flutter install
     ```
 
 #### Option 2: Download APK
