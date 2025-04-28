@@ -30,7 +30,15 @@ Welcome to **Phone Theft Guard**, a mobile app developed for the final assessmen
 
 ### App Screenshots
 
-![Phone Theft Guard Screenshot](screenshot.png) <!-- Replace with actual screenshot path -->
+<img src="./ReadmeSrc/img/1.jpg" width="300">
+<img src="./ReadmeSrc/img/home.jpg" width="300">
+<img src="./ReadmeSrc/img/history.jpg" width="300">
+<img src="./ReadmeSrc/img/login.jpg" width="300">
+<img src="./ReadmeSrc/img/community.jpg" width="300">
+<img src="./ReadmeSrc/img/search.jpg" width="300">
+<img src="./ReadmeSrc/img/search1.jpg" width="300">
+<img src="./ReadmeSrc/img/setting.jpg" width="300">
+<img src="./ReadmeSrc/img/setting1.jpg" width="300">
 
 ### Presentation Video
 
