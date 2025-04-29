@@ -43,8 +43,9 @@ Landing Page ：https://mk20661.github.io/PhoneTheftGuard/
 <img src="./ReadmeSrc/img/setting1.jpg" width="300">
 
 ### Demo Video
-[video](https://github.com/mk20661/PhoneTheftGuard/blob/main/ReadmeSrc/video/demo.mp4)  
-https://github.com/user-attachments/assets/5824bf81-ec83-4577-8ee2-7401040a91c4
+[Video](https://github.com/user-attachments/assets/5824bf81-ec83-4577-8ee2-7401040a91c4)  
+[Video Download](https://github.com/mk20661/PhoneTheftGuard/blob/main/ReadmeSrc/video/demo.mp4)  
+
 ---
 
 ## 🔧 Installation Instructions
