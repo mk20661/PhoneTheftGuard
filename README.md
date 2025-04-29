@@ -40,10 +40,9 @@ Welcome to **Phone Theft Guard**, a mobile app developed for the final assessmen
 <img src="./ReadmeSrc/img/setting.jpg" width="300">
 <img src="./ReadmeSrc/img/setting1.jpg" width="300">
 
-### Presentation Video
+### Demo Video
 
-[🎥 Watch the demo video here!](your-presentation-video-link) <!-- Replace with your video link -->
-
+<video src="./ReadmeSrc/video/demo.mp4" controls width="640"></video>
 ---
 
 ## 🔧 Installation Instructions
